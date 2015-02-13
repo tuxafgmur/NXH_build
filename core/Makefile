@@ -2227,14 +2227,16 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-CM_TARGET_PACKAGE := $(PRODUCT_OUT)/lineage-$(LINEAGE_VERSION).zip
+XENONHD_TARGET_PACKAGE := $(PRODUCT_OUT)/$(XENONHD_VERSION)-$(TARGET_DEVICE).zip
 
 .PHONY: otapackage bacon
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CM_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(CM_TARGET_PACKAGE) | sed "s|$(PRODUCT_OUT)/||" > $(CM_TARGET_PACKAGE).md5sum
-	@echo "Package Complete: $(CM_TARGET_PACKAGE)" >&2
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(XENONHD_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(XENONHD_TARGET_PACKAGE) > $(XENONHD_TARGET_PACKAGE).md5sum
+	@echo -e ${CL_CYN}"===========-Package complete-==========="${CL_RST}
+	@echo -e ${CL_CYN}"$(XENONHD_VERSION)-$(TARGET_DEVICE).zip"${CL_RST}
+	@echo -e ${CL_CYN}"========================================"${CL_RST}
 
 endif    # build_ota_package
 # -----------------------------------------------------------------
