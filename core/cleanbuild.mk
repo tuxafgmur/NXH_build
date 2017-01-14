@@ -234,6 +234,7 @@ installclean_files := \
 	$(PRODUCT_OUT)/*.xlb \
 	$(PRODUCT_OUT)/*.zip \
 	$(PRODUCT_OUT)/kernel \
+        $(PRODUCT_OUT)/*.md5sum \
 	$(PRODUCT_OUT)/*.zip.md5sum \
 	$(PRODUCT_OUT)/data \
 	$(PRODUCT_OUT)/skin \
@@ -256,7 +257,11 @@ installclean_files := \
 	$(PRODUCT_OUT)/obj/ETC/mac_permissions.xml_intermediates \
 	$(PRODUCT_OUT)/obj/ETC/sepolicy_intermediates \
 	$(PRODUCT_OUT)/obj/ETC/sepolicy.recovery_intermediates \
-	$(PRODUCT_OUT)/obj/ETC/init.environ.rc_intermediates
+	$(PRODUCT_OUT)/obj/ETC/init.environ.rc_intermediates \
+	$(PRODUCT_OUT)/ota_nougat*.xml \
+	$(PRODUCT_OUT)/Changelog.txt \
+	$(PRODUCT_OUT)/ota_override_device \
+	$(ANDROID_BUILD_TOP)/ota_conf
 
 # The files/dirs to delete during a dataclean, which removes any files
 # in the staging and emulator data partitions.

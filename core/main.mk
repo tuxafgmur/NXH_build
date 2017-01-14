@@ -1099,7 +1099,9 @@ dirty:
 	@rm -rf $(OUT_DIR)/target/product/*/system/build.prop
 	@rm -rf $(OUT_DIR)/target/product/*/*.zip
 	@rm -rf $(OUT_DIR)/target/product/*/*.md5sum
-	@rm -rf $(OUT_DIR)/target/product/*/ota_nougat.xml
+	@rm -rf $(OUT_DIR)/target/product/*/ota_nougat*.xml
+	@rm -rf $(OUT_DIR)/target/product/*/Changelog.txt
+	@rm -rf $(ANDROID_BUILD_TOP)/ota_conf
 	@echo -e ${CL_GRN}"build.prop, ota and zip files erased"${CL_RST}
 
 #xxx scrape this from ALL_MODULE_NAME_TAGS
