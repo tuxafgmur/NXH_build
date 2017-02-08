@@ -15,6 +15,10 @@ print_build_config_vars := \
   HOST_OS_EXTRA \
   OUT_DIR
 
+ifneq ($(RECOVERY_VARIANT),)
+print_build_config_vars += \
+  RECOVERY_VARIANT
+endif
 ifeq ($(WITH_SU),true)
 print_build_config_vars += \
   WITH_SU
