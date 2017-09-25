@@ -71,10 +71,7 @@ endef
 
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-TARGET_GLOBAL_CFLAGS += \
-    -fno-strict-aliasing \
-
-TARGET_GLOBAL_CFLAGS += \
+TARGET_GLOBAL_CFLAGS += -fno-strict-aliasing \
 			-fstack-protector-strong \
 			-ffunction-sections \
 			-fdata-sections \
@@ -86,24 +83,15 @@ TARGET_GLOBAL_CFLAGS += \
 			-no-canonical-prefixes \
 			-fno-canonical-system-headers \
 			$(arch_variant_cflags) \
+			-w
 
 # Help catch common 32/64-bit errors.
 TARGET_GLOBAL_CFLAGS += \
     -Werror=pointer-to-int-cast \
     -Werror=int-to-pointer-cast \
     -Werror=implicit-function-declaration \
-
-TARGET_GLOBAL_CFLAGS += -fno-strict-volatile-bitfields
-
-# This is to avoid the dreaded warning compiler message:
-#   note: the mangling of 'va_list' has changed in GCC 4.4
-#
-# The fact that the mangling changed does not affect the NDK ABI
-# very fortunately (since none of the exposed APIs used va_list
-# in their exported C++ functions). Also, GCC 4.5 has already
-# removed the warning from the compiler.
-#
-TARGET_GLOBAL_CFLAGS += -Wno-psabi
+    -fno-strict-volatile-bitfields \
+    -Wno-psabi
 
 TARGET_GLOBAL_LDFLAGS += \
 			-Wl,-z,noexecstack \
@@ -122,12 +110,11 @@ TARGET_GLOBAL_LDFLAGS += \
 # Disable transitive dependency library symbol resolving.
 TARGET_GLOBAL_LDFLAGS += -Wl,--allow-shlib-undefined
 
-TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden -w
 
 # More flags/options can be added here
-TARGET_RELEASE_CFLAGS := \
-			-DNDEBUG \
-			-O2 -g \
+TARGET_RELEASE_CFLAGS := -DNDEBUG \
+			-O2 \
 			-Wstrict-aliasing=2 \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \

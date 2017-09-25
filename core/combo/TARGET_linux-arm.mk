@@ -71,16 +71,18 @@ endef
 
 $(combo_2nd_arch_prefix)TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O2 \
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS := -O2 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
-                        -funswitch-loops
+                        -funswitch-loops     \
+                        -w
 
 # Modules can choose to compile some source as thumb.
-$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
-                        -Os \
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -O2 \
+			-mthumb              \
                         -fomit-frame-pointer \
-                        -fno-strict-aliasing
+                        -fno-strict-aliasing \
+                        -w
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
@@ -109,24 +111,14 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += \
 			-no-canonical-prefixes \
 			-fno-canonical-system-headers \
 			$(arch_variant_cflags) \
+			-w
 
-# The "-Wunused-but-set-variable" option often breaks projects that enable
-# "-Wall -Werror" due to a commom idiom "ALOGV(mesg)" where ALOGV is turned
-# into no-op in some builds while mesg is defined earlier. So we explicitly
-# disable "-Wunused-but-set-variable" here.
-ifneq ($(filter 4.6 4.6.% 4.7 4.7.% 4.8 4.9, $($(combo_2nd_arch_prefix)TARGET_GCC_VERSION)),)
-$(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -fno-builtin-sin \
+ifneq ($(filter 4.9 4.8 4.7.% 4.7 4.6.% 4.6, $($(combo_2nd_arch_prefix)TARGET_GCC_VERSION)),)
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += \
+			-fno-builtin-sin \
 			-fno-strict-volatile-bitfields
 endif
 
-# This is to avoid the dreaded warning compiler message:
-#   note: the mangling of 'va_list' has changed in GCC 4.4
-#
-# The fact that the mangling changed does not affect the NDK ABI
-# very fortunately (since none of the exposed APIs used va_list
-# in their exported C++ functions). Also, GCC 4.5 has already
-# removed the warning from the compiler.
-#
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -Wno-psabi
 
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_LDFLAGS += \
@@ -143,16 +135,16 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_LDFLAGS += \
 
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
-$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden -w
 
 # More flags/options can be added here
 $(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS := \
 			-DNDEBUG \
-			-g \
 			-Wstrict-aliasing=2 \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \
-			-frename-registers
+			-frename-registers \
+			-w
 
 libc_root := bionic/libc
 libm_root := bionic/libm
