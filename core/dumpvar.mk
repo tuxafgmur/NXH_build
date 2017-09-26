@@ -1,28 +1,51 @@
 # List of variables we want to print in the build banner.
 print_build_config_vars := \
+  PLATFORM_VERSION \
   XENONHD_VERSION \
   TARGET_PRODUCT \
-  PLATFORM_VERSION \
-  BUILD_ID \
   TARGET_BUILD_VARIANT \
   TARGET_ARCH \
   TARGET_ARCH_VARIANT \
-  TARGET_CPU_VARIANT \
-  TARGET_2ND_ARCH \
-  TARGET_2ND_ARCH_VARIANT \
-  TARGET_2ND_CPU_VARIANT \
-  TARGET_GCC_VERSION \
+  TARGET_CPU_VARIANT
+
+ifneq ($(TARGET_2ND_ARCH),)
+  print_build_config_vars += \
+    TARGET_2ND_ARCH \
+    TARGET_2ND_ARCH_VARIANT \
+    TARGET_2ND_CPU_VARIANT
+endif
+  
+print_build_config_vars += \
+  HOST_OS \
   HOST_OS_EXTRA \
+  TARGET_GCC_VERSION \
+  BUILD_ID \
   OUT_DIR
+
+ifeq ($(WITH_DEXPREOPT),true)
+  print_build_config_vars += \
+    WITH_DEXPREOPT 
+  ifeq ($(WITH_DEXPREOPT),true)
+    print_build_config_vars += \
+      DONT_DEXPREOPT_PREBUILTS  
+  endif
+endif
+
+ifneq ($(TARGET_BUILD_APPS),)
+  print_build_config_vars += \
+    TARGET_BUILD_APPS
+endif
 
 ifneq ($(RECOVERY_VARIANT),)
 print_build_config_vars += \
   RECOVERY_VARIANT
 endif
+
 ifeq ($(WITH_SU),true)
 print_build_config_vars += \
   WITH_SU
 endif
+
 ifeq ($(WITH_GMS),true)
 print_build_config_vars += \
   WITH_GMS
@@ -120,25 +143,23 @@ endif
 endif # CALLED_FROM_SETUP
 
 ifneq ($(PRINT_BUILD_CONFIG),)
-HOST_OS_EXTRA:=$(shell python -c "import platform; print(platform.platform())")
-$(info ================Team Horizon================)
-$(info   XENONHD_VERSION=$(XENONHD_VERSION))
-$(info   TARGET_PRODUCT=$(TARGET_PRODUCT))
-$(info   PLATFORM_VERSION=$(PLATFORM_VERSION))
-$(info   BUILD_ID=$(BUILD_ID))
-$(info   TARGET_BUILD_VARIANT=$(TARGET_BUILD_VARIANT))
-$(info   TARGET_ARCH=$(TARGET_ARCH))
-$(info   TARGET_ARCH_VARIANT=$(TARGET_ARCH_VARIANT))
-$(info   TARGET_CPU_VARIANT=$(TARGET_CPU_VARIANT))
-$(info   TARGET_2ND_ARCH=$(TARGET_2ND_ARCH))		
-$(info   TARGET_2ND_ARCH_VARIANT=$(TARGET_2ND_ARCH_VARIANT))		
-$(info   TARGET_2ND_CPU_VARIANT=$(TARGET_2ND_CPU_VARIANT))
-$(info   TARGET_GCC_VERSION=$(TARGET_GCC_VERSION))
-$(info   HOST_OS_EXTRA=$(HOST_OS_EXTRA))
-$(info   OUT_DIR=$(OUT_DIR))
+$(info ============================================)
+$(foreach v, $(print_build_config_vars),\
+  $(info $v=$($(v))))
 ifeq ($(CYNGN_TARGET),true)
 $(info   CYNGN_TARGET=$(CYNGN_TARGET))
 $(info   CYNGN_FEATURES=$(CYNGN_FEATURES))
+endif  
+ifeq ($(BLOCK_BASED_OTA),false)
+  $(info BLOCK_BASED_OTA=false)
+endif
+ifdef BUILDING_OTA
+  ifneq ($(BUILDING_OTA),false)
+    $(info BUILDING_OTA=true)
+    $(info DELETE_RECOVERY=$(DELETE_RECOVERY))
+  else
+    $(info BUILDING_OTA=false)
+  endif
 endif
 $(info ============================================)
 endif
