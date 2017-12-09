@@ -83,7 +83,7 @@ endif
 
 # Modules can choose to compile some source as thumb.
 ifeq ($(strip $(CUSTOM_THUMB_CFLAGS)),)
-$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -O2 \
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS := -Os \
 			-mthumb              \
                         -fomit-frame-pointer \
                         -fno-strict-aliasing \
