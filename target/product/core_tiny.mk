@@ -40,8 +40,6 @@ PRODUCT_PACKAGES += \
     CtsShimPrebuilt \
     CtsShimPrivPrebuilt \
     DefaultContainerService \
-    ExtShared \
-    ExtServices \
     SettingsProvider \
     Shell \
     WallpaperBackup \
