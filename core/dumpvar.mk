@@ -156,9 +156,15 @@ endif
 ifdef BUILDING_OTA
   ifneq ($(BUILDING_OTA),false)
     $(info BUILDING_OTA=true)
-    $(info DELETE_RECOVERY=$(DELETE_RECOVERY))
   else
     $(info BUILDING_OTA=false)
+  endif
+endif
+ifdef DELETE_RECOVERY
+  ifneq ($(DELETE_RECOVERY),true)
+    $(info BUILDING_OTA=false)
+  else
+    $(info DELETE_RECOVERY=true)
   endif
 endif
 $(info ============================================)
