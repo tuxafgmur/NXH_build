@@ -166,7 +166,8 @@ class EdifyGenerator(object):
     self.script.append(('run_program("/tmp/install/bin/backuptool.sh", "%s");' % command))
 
   def DeleteRecovery(self, command):
-    self.script.append('delete("/system/etc/recovery-resource.dat");')
+    self.script.append('delete("/system/recovery-from-boot.p");')
+    self.script.append('delete("/system/bin/install-recovery.sh");')
 
   def ValidateSignatures(self, command):
     self.script.append('package_extract_file("META-INF/org/lineageos/releasekey", "/tmp/releasekey");')
