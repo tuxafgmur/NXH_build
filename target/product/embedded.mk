@@ -34,7 +34,6 @@ PRODUCT_PACKAGES += \
     healthd \
     init \
     init.environ.rc \
-    init.rc \
     libEGL \
     libETC1 \
     libFFTEm \
@@ -92,7 +91,14 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     debug.atrace.tags.enableflags=0
 
 PRODUCT_COPY_FILES += \
+    system/core/rootdir/etc/hosts:system/etc/hosts
+    
+ifneq ($(DEVICE_HAS_INITRC),true)
+PRODUCT_PACKAGES += \
+    init.rc
+
+PRODUCT_COPY_FILES += \
     system/core/rootdir/init.usb.rc:root/init.usb.rc \
     system/core/rootdir/init.usb.configfs.rc:root/init.usb.configfs.rc \
-    system/core/rootdir/ueventd.rc:root/ueventd.rc \
-    system/core/rootdir/etc/hosts:system/etc/hosts
+    system/core/rootdir/ueventd.rc:root/ueventd.rc
+endif
